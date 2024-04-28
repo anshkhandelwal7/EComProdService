@@ -6,7 +6,6 @@ import dev.ansh.EcomProdService.dto.ProductResponseDTO;
 public class ProductEntityDTOMapper {
     public static ProductResponseDTO convertProductEntityToProductResponseDTO(Product product) {
         ProductResponseDTO responseDTO = new ProductResponseDTO();
-        responseDTO.setProductId(product.getId());
         responseDTO.setTitle(product.getTitle());
         responseDTO.setDescription(product.getDescription());
         responseDTO.setPrice(product.getPrice());

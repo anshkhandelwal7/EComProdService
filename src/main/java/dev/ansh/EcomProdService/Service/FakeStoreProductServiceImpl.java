@@ -3,10 +3,11 @@ package dev.ansh.EcomProdService.Service;
 import dev.ansh.EcomProdService.Entity.Product;
 import dev.ansh.EcomProdService.client.FakeStoreClient;
 import dev.ansh.EcomProdService.dto.FakeStoreProductResponseDTO;
+import dev.ansh.EcomProdService.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+@Service("fakeStoreProductServiceImpl")
 public class FakeStoreProductServiceImpl implements ProductService{
 
     private FakeStoreClient fakeStoreClient;
@@ -17,8 +18,13 @@ public class FakeStoreProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProduct(int productId) {
-        return null;
+    public FakeStoreProductResponseDTO getProduct(int productId) throws ProductNotFoundException {
+        FakeStoreProductResponseDTO fakeStoreProductResponseDTO=fakeStoreClient.getProductbyId(productId);
+        if(fakeStoreProductResponseDTO==null)
+        {
+            throw new ProductNotFoundException("Product not found with id" + productId);
+        }
+        return fakeStoreProductResponseDTO;
     }
 
     @Override

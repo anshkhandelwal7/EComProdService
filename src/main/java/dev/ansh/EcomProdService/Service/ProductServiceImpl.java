@@ -1,24 +1,32 @@
 package dev.ansh.EcomProdService.Service;
 
 import dev.ansh.EcomProdService.Entity.Product;
+import dev.ansh.EcomProdService.dto.FakeStoreProductResponseDTO;
+import dev.ansh.EcomProdService.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+@Service("ProductService")
 public class ProductServiceImpl implements ProductService{
+
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
-    public List<Product> getAllProducts() {
+    public List<FakeStoreProductResponseDTO> getAllProducts() {
         return List.of();
     }
 
     @Override
-    public Product getProduct(int productId) {
+    public FakeStoreProductResponseDTO getProduct(int productId) {
         return null;
     }
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
     }
 
     @Override
