@@ -2,7 +2,9 @@ package dev.ansh.EcomProdService.Controllers;
 
 import dev.ansh.EcomProdService.Entity.Product;
 import dev.ansh.EcomProdService.Service.ProductService;
+import dev.ansh.EcomProdService.dto.CreateProductRequestDTO;
 import dev.ansh.EcomProdService.dto.FakeStoreProductResponseDTO;
+import dev.ansh.EcomProdService.dto.ProductResponseDTO;
 import dev.ansh.EcomProdService.exception.InvalidInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,45 +22,43 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity getAllProducts() {
-       List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+       List<ProductResponseDTO> products = productService.getAllProducts();
        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getProductbyId(@PathVariable("id") UUID id)
+    public ResponseEntity<ProductResponseDTO> getProductbyId(@PathVariable("id") UUID id)
     {
         if(id==null)
         {
             throw new InvalidInputException("Input is not correct");
         }
-        Product product = productService.getProduct(id);
-        return ResponseEntity.ok(product);
+
+        return ResponseEntity.ok(productService.getProduct(id));
     }
 
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody Product product)
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody CreateProductRequestDTO productRequestDTO)
     {
-        Product savedProduct = productService.createProduct(product);
-        return ResponseEntity.ok(savedProduct);
+        return ResponseEntity.ok(productService.createProduct(productRequestDTO));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity updateProduct(@PathVariable("id") UUID id, @RequestBody Product product)
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("id") UUID id, @RequestBody CreateProductRequestDTO productRequestDTO)
     {
-        Product updatedProduct = productService.updateProduct(product,id);
-        return ResponseEntity.ok(updatedProduct);
+        return ResponseEntity.ok(productService.updateProduct(productRequestDTO,id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteProduct(@PathVariable("id") UUID id) {
+    public ResponseEntity<Boolean> deleteProduct(@PathVariable("id") UUID id) {
 
         return ResponseEntity.ok(productService.deleteProduct(id));
     }
 
     @GetMapping("/name/{productName}")
-    public ResponseEntity getProductByProductName(@PathVariable("productName") String productName) {
+    public ResponseEntity<ProductResponseDTO> getProductByProductName(@PathVariable("productName") String productName) {
 
         return ResponseEntity.ok(productService.getProduct(productName));
     }
